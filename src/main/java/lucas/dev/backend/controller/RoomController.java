@@ -2,15 +2,19 @@ package lucas.dev.backend.controller;
 
 import lucas.dev.backend.model.Room;
 import lucas.dev.backend.service.RoomService;
+import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/rooms")
 public class RoomController {
 
-    private final RoomService roomService;
+    private RoomService roomService;
 
     public RoomController (RoomService roomService) {
         this.roomService = roomService;
@@ -18,14 +22,30 @@ public class RoomController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Room insertRoom(@RequestBody Room room) {
+    public Room insertRoom(@Valid @RequestBody Room room) {
         return roomService.save(room);
     }
 
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public Optional<Room> findRoomById (int id) {
-        return roomService.findById(id);
+    @GetMapping("/{id}")
+    public ResponseEntity findRoomById (@PathVariable Long id) {
+        return roomService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping
+    public ResponseEntity<List<Room>> getAllRooms() {
+        return new ResponseEntity(roomService.findAll(), HttpStatus.OK);
+    }
+
+
+    @ResponseBody
+    @DeleteMapping
+    public void deleteRoomById(@PathVariable Long id) throws Exception{
+        roomService.deleteById(id);
+    }
+    @PatchMapping
+    public Room updateRoom (@PathVariable Long id, @RequestBody Room room) {
+        return roomService.update(id, room);
+    }
 }

@@ -1,8 +1,12 @@
 package lucas.dev.backend.service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+
 import lucas.dev.backend.model.Room;
 import lucas.dev.backend.repository.RoomRepository;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class RoomService {
 
-    private final RoomRepository roomRepository;
+    private RoomRepository roomRepository;
 
     public RoomService(RoomRepository roomRepository) {
         this.roomRepository = roomRepository;
@@ -22,20 +26,32 @@ public class RoomService {
     }
 
     @Transactional
-    public void deleteById(int id) {
-        // Exception handling has already been done in the method below
+    public void deleteById(Long id) throws Exception{
         Optional<Room> room = findById(id);
 
-        roomRepository.delete(room.get());
+        if(room.isEmpty()){
+            throw new Exception("Not Found");
+        } else {
+            roomRepository.delete(room.get());
+        }
     }
 
-    public Optional<Room> findById(int id) {
+    public Optional<Room> findById(Long id) {
         Optional<Room> room = roomRepository.findById(id);
 
-        if (!roomRepository.existsById(id)) {
-            throw new IllegalArgumentException("Object not found");
-        }
-
         return room;
+    }
+
+    public List<Room> findAll() {
+        return roomRepository.findAll();
+    }
+
+    public Room update(Long id, Room room) {
+        Optional<Room> newRoom = roomRepository.findById(id);
+
+        newRoom.get().setRoomNumber(room.getRoomNumber());
+        newRoom.get().setRoomDescription(room.getRoomDescription());
+
+        return save(room);
     }
 }
