@@ -3,6 +3,7 @@ package lucas.dev.backend.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import java.io.Serial;
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.io.Serializable;
 
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name = "rooms")
 public class Room implements Serializable {
 
@@ -28,5 +30,9 @@ public class Room implements Serializable {
     @NotBlank
     @Column(name = "room_description")
     private String roomDescription;
+
+    @NotBlank
+    @Column(name = "value_per_day")
+    private double valuePerDay;
 
 }

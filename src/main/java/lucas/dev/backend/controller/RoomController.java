@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "/rooms")
+@RequestMapping("/rooms")
 public class RoomController {
 
     private RoomService roomService;
@@ -41,7 +41,7 @@ public class RoomController {
 
     @ResponseBody
     @DeleteMapping
-    public void deleteRoomById(@PathVariable Long id) throws Exception{
+    public void deleteRoomById(@RequestParam Long id) throws Exception{
         roomService.deleteById(id);
     }
     @PatchMapping

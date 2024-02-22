@@ -2,11 +2,8 @@ package lucas.dev.backend.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
-
 import lucas.dev.backend.model.Room;
 import lucas.dev.backend.repository.RoomRepository;
-import org.hibernate.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,6 +43,7 @@ public class RoomService {
         return roomRepository.findAll();
     }
 
+    @Transactional
     public Room update(Long id, Room room) {
         Optional<Room> newRoom = roomRepository.findById(id);
 
