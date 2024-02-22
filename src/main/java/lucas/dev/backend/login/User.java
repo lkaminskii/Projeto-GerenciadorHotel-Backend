@@ -25,8 +25,8 @@ public class User implements Serializable {
     @NotBlank
     private String password;
 
-    @Column
-    @Enumerated(EnumType.STRING)
-    private UserStatus userStatus;
+    @Column(name = "is_admin")
+    @NotBlank
+    private boolean isAdmin;
 
 }
