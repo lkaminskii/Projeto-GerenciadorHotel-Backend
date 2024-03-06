@@ -1,12 +1,15 @@
 package lucas.dev.backend.dto;
 
-import lombok.Data;
-import lucas.dev.backend.login.UserStatus;
+import lombok.Getter;
+import lucas.dev.backend.login.User;
 
-@Data
+@Getter
 public class UserModel {
 
     private String login;
-    private UserStatus userStatus;
+
+    public UserModel(User user) {
+        login = user.getLogin();
+    }
 
 }

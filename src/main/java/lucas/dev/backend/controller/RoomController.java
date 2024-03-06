@@ -2,13 +2,11 @@ package lucas.dev.backend.controller;
 
 import lucas.dev.backend.model.Room;
 import lucas.dev.backend.service.RoomService;
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/rooms")
