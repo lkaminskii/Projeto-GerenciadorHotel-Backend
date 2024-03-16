@@ -1,38 +1,43 @@
 package lucas.dev.backend.model;
 
-
+import lucas.dev.backend.enums.*;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.validation.constraints.NotBlank;
-import java.io.Serial;
-import java.io.Serializable;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 
-
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 @Entity
-@NoArgsConstructor
 @Table(name = "rooms")
-public class Room implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class Room {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotEmpty
     @Column(name = "room_number")
     private String roomNumber;
 
-    @NotBlank
+    @NotEmpty
     @Column(name = "room_description")
     private String roomDescription;
 
-    @NotBlank
+    @NotEmpty
     @Column(name = "value_per_day")
     private double valuePerDay;
 
+    @NotNull
+    @Column(name = "is_vacant")
+    private boolean isVacant;
+
+    @NotNull
+    @Column(name = "room_status")
+    @Enumerated(EnumType.STRING)
+    private RoomStatus roomStatus;
 }

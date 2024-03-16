@@ -2,13 +2,16 @@ package lucas.dev.backend.service;
 
 import java.util.List;
 import java.util.Optional;
+
+import lucas.dev.backend.dto.RoomModel;
 import lucas.dev.backend.model.Room;
 import lucas.dev.backend.repository.RoomRepository;
-import org.springframework.stereotype.Service;
+
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 
-@Service
+@Component
 public class RoomService {
 
     private RoomRepository roomRepository;
@@ -24,23 +27,28 @@ public class RoomService {
 
     @Transactional
     public void deleteById(Long id) throws Exception{
-        Optional<Room> room = findById(id);
-
-        if(room.isEmpty()){
-            throw new Exception("Not Found");
-        } else {
-            roomRepository.delete(room.get());
+        if(!roomRepository.existsById(id)){
+            throw new Exception("Object Not Found");
         }
+        roomRepository.deleteById(id);
     }
 
-    public Optional<Room> findById(Long id) {
+    public Optional<RoomModel> findById(Long id) throws Exception{
+        if(!roomRepository.existsById(id)){
+            throw new Exception("Object Not Found");
+        }
+
         Optional<Room> room = roomRepository.findById(id);
+        Optional<RoomModel> roomModel = room.map(x -> new RoomModel(x));
 
-        return room;
+        return roomModel;
     }
 
-    public List<Room> findAll() {
-        return roomRepository.findAll();
+    public List<RoomModel> findAll() {
+        List<Room> list = roomRepository.findAll();
+        List<RoomModel> convertedList = list.stream().map(x -> new RoomModel(x)).toList();
+        
+        return convertedList;
     }
 
     @Transactional

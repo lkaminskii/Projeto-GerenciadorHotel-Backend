@@ -1,5 +1,6 @@
 package lucas.dev.backend.controller;
 
+import lucas.dev.backend.dto.RoomModel;
 import lucas.dev.backend.model.Room;
 import lucas.dev.backend.service.RoomService;
 import org.springframework.http.HttpStatus;
@@ -25,14 +26,14 @@ public class RoomController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity findRoomById (@PathVariable Long id) {
+    public ResponseEntity findRoomById (@PathVariable Long id) throws Exception{
         return roomService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping
-    public ResponseEntity<List<Room>> getAllRooms() {
+    public ResponseEntity<List<RoomModel>> getAllRooms() {
         return new ResponseEntity(roomService.findAll(), HttpStatus.OK);
     }
 
